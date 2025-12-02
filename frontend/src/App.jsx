@@ -11,10 +11,14 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
-      <h1>Wildfire Prediction WebApp</h1>
-      <p>Backend says: {message}</p>
-    </div>
+    <>
+      <h1 className="bg-red-400 text-white">WILDFIRE AI</h1>
+      <div className="App">
+        <h1>Wildfire Prediction WebApp</h1>
+        <p>Backend says: {message}</p>
+      </div>
+    </>
+    
   );
 }
 //test deploy
