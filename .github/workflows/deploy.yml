@@ -1,0 +1,45 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "$AWS_SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          echo "$EC2_KNOWN_HOSTS" > ~/.ssh/known_hosts
+
+      - name: Build frontend
+        run: |
+          cd frontend
+          npm install
+          npm run build
+
+      - name: Copy frontend build to EC2
+        run: |
+          scp -r frontend/dist ubuntu@${EC2_HOST}:/home/ubuntu/wildfire-ai/frontend/
+
+      - name: Build backend
+        run: |
+          cd backend
+          npm install
+
+      - name: Deploy backend to EC2
+        run: |
+          ssh ubuntu@${EC2_HOST} "
+            cd /home/ubuntu/wildfire-ai/backend &&
+            git pull &&
+            npm install &&
+            pm2 reload all
+          "
