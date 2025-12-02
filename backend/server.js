@@ -13,7 +13,7 @@ app.get('/',(req,res)=>{
     res.send('Backend is running');
 });
 
-app.post('/api/risk', (req, res) => {
+app.post('/risk', (req, res) => {
   const { temp, humidity, wind, vegDry } = req.body;
 
   let risk = "Low"; // default
