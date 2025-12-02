@@ -2,25 +2,35 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 function App() {
-  const [message, setMessage] = useState("");
+  
+  const [inputs, setInputs] = useState({temp:0,humidity:0,wind:0,vegDry:0});
+  const [risk,setRisk]=useState("");
 
-  useEffect(() => {
-    axios.get("http://13.232.241.149/api/")
-      .then(res => setMessage(res.data))
-      .catch(err => console.log(err));
-  }, []);
+  const handleSubmit = async()=>{
+    try{
+      const res= await axios.post("http://13.232.241.149/api/risk",inputs);
+      setRisk(res.data.risk);
+    }catch(err){
+      console.error(err);
+    }
+  }
 
   return (
-    <>
-      <h1 className="bg-red-400 text-white">WILDFIRE AI</h1>
-      <div className="App">
-        <h1>Wildfire Prediction WebApp</h1>
-        <p>Backend says: {message}</p>
+    <div>
+      <input type="number" placeholder="Temperature" onChange={e=>setInputs({...inputs,temp:+e.target.value})}/>
+      <input type="number" placeholder="Humidity" onChange={e=>setInputs({...inputs,humidity:+e.target.value})}/>
+      <input type="number" placeholder="Wind speed" onChange={e=>setInputs({...inputs,wind:+e.target.value})}/>
+      <input type="number" placeholder="Vegetation Dryness" onChange={e=>setInputs({...inputs,vegDry:+e.target.value})}/>
+
+      <button onClick={handleSubmit}>Check Risk</button>
+
+      <div className={`mt-4 p-2 text-white ${risk === "High" ? "bg-red-500" : risk === "Medium" ? "bg-yellow-500" : "bg-green-500"}`}>
+        Current Risk:{risk || "Input parameters"}
       </div>
-    </>
+    </div>
     
   );
 }
-//test deploy
+
 
 export default App;
