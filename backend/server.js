@@ -13,6 +13,21 @@ app.get('/',(req,res)=>{
     res.send('Backend is running');
 });
 
+app.post('/risk', (req, res) => {
+  const { temp, humidity, wind, vegDry } = req.body;
+
+  let risk = "Low";
+
+  if (temp > 40 || humidity < 30 || wind > 40 || vegDry > 70) {
+    risk = "High";
+  } else if (temp >= 30 || humidity <= 50 || wind >= 20 || vegDry >= 50) {
+    risk = "Medium";
+  }
+
+  res.json({ risk });
+});
+
+
 app.listen(PORT,()=>{
     console.log(`server running on port ${PORT}`);
 });
