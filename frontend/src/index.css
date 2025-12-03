@@ -1,1 +1,119 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+@layer base {
+  :root {
+    --background: 15 10% 6%;
+    --foreground: 35 10% 95%;
+
+    --card: 15 8% 10%;
+    --card-foreground: 35 10% 95%;
+
+    --popover: 15 8% 10%;
+    --popover-foreground: 35 10% 95%;
+
+    --primary: 25 95% 53%;
+    --primary-foreground: 15 10% 6%;
+
+    --secondary: 15 8% 15%;
+    --secondary-foreground: 35 10% 95%;
+
+    --muted: 15 8% 18%;
+    --muted-foreground: 35 10% 60%;
+
+    --accent: 35 100% 50%;
+    --accent-foreground: 15 10% 6%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 35 10% 95%;
+
+    --danger: 0 90% 50%;
+    --warning: 35 100% 50%;
+    --caution: 50 100% 50%;
+
+    --border: 15 8% 20%;
+    --input: 15 8% 15%;
+    --ring: 25 95% 53%;
+
+    --radius: 0.75rem;
+
+    --gradient-fire: linear-gradient(135deg, hsl(25, 95%, 53%) 0%, hsl(0, 90%, 50%) 100%);
+    --gradient-ember: linear-gradient(180deg, hsl(15, 10%, 6%) 0%, hsl(15, 15%, 12%) 100%);
+    --shadow-glow: 0 0 60px hsl(25 95% 53% / 0.3);
+    --shadow-card: 0 4px 24px hsl(0 0% 0% / 0.4);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+@layer components {
+  .fire-gradient {
+    background: var(--gradient-fire);
+  }
+
+  .fire-text {
+    background: var(--gradient-fire);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    display: inline;
+  }
+
+  .ember-glow {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .card-shadow {
+    box-shadow: var(--shadow-card);
+  }
+
+  .glass-card {
+    @apply bg-card/80 backdrop-blur-md border border-border/50;
+  }
+}
+
+/* Leaflet custom dark theme */
+.leaflet-container {
+  background: hsl(15 10% 6%) !important;
+}
+
+.leaflet-tile-pane {
+  filter: brightness(0.7) contrast(1.1) saturate(0.8);
+}
+
+.leaflet-control-zoom a {
+  background: hsl(15 8% 15%) !important;
+  color: hsl(35 10% 95%) !important;
+  border-color: hsl(15 8% 20%) !important;
+}
+
+.leaflet-control-zoom a:hover {
+  background: hsl(15 8% 20%) !important;
+}
+
+.leaflet-popup-content-wrapper {
+  background: hsl(15 8% 10%) !important;
+  color: hsl(35 10% 95%) !important;
+  border-radius: 0.75rem !important;
+}
+
+.leaflet-popup-tip {
+  background: hsl(15 8% 10%) !important;
+}

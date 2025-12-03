@@ -1,0 +1,250 @@
+🔥 Wildfire Prediction MVP — Product Definition Document (PDD)
+
+Version: 1.0
+Owner: Pratham
+Timeline: 1 Month (4 Weeks)
+
+1. Product Overview
+
+The Wildfire Prediction MVP is a web-based system that allows a user to view recent satellite imagery of a region, run an AI model that predicts wildfire risk or highlights possible fire regions, and visualize the output as a heatmap overlay on a map.
+This MVP does not aim for production-level accuracy — only a functional end-to-end pipeline.
+
+2. Core Goal for MVP
+
+Build a working prototype that:
+
+Accepts a location/region from user.
+
+Retrieves or accepts satellite image input.
+
+Sends it to an AI inference API.
+
+Returns a predicted fire-risk heatmap or fire/ burned area segmentation mask.
+
+Displays it as an overlay on a web map.
+
+3. Target Users (for MVP)
+
+Students & researchers experimenting with wildfire AI.
+
+Emergency enthusiasts / demo audiences.
+
+Hackathon / portfolio reviewers.
+
+4. MVP Features (Strict Scope)
+4.1 Frontend (React + Tailwind + Leaflet/Mapbox)
+
+✔ Map interface with:
+
+Search box to choose a location
+
+View satellite imagery (static tiles or uploaded image)
+
+Button: “Predict Fire Risk”
+
+✔ Overlay support:
+
+Display AI-predicted heatmap/mask on top of map
+
+Basic opacity slider
+
+✔ Minimal UI pages:
+
+Home (map + prediction)
+
+About the project
+
+4.2 Backend (Node/Express or FastAPI)
+
+✔ API Endpoints:
+
+POST /predict → Input: region coordinates OR uploaded tile
+
+GET /health → Service health check
+
+✔ Orchestrates model inference by:
+
+Passing image → Python AI inference script
+
+Returning model output (image mask as base64 or PNG)
+
+✔ Logs each prediction request (MongoDB or simple folder logs).
+
+4.3 AI Model (Python + PyTorch)
+
+✔ Simple segmentation or classification model:
+
+Model type: U-Net or small CNN
+
+Task: Detect fire / burned areas on small satellite patches
+
+Trained on open-source datasets (Sentinel-2 patches, Fire datasets)
+
+Achieve “reasonable” patterns, not accuracy perfection
+
+✔ Steps included:
+
+Preprocess satellite images to 256×256
+
+Train model locally/Colab for a few epochs
+
+Export to .pt file
+
+Inference script taking input → returns mask
+
+Basic thresholding into heatmap
+
+4.4 Data (for MVP)
+
+✔ Use publicly available imagery:
+
+Google Earth Engine export OR
+
+Open wildfire datasets from Kaggle / UNSPIDER
+
+✔ No live streaming, no IoT integration (later phase).
+
+5. Non-Goals (Out of Scope for 1 Month)
+
+❌ Real-time satellite feed integration
+❌ Multi-sensor IoT fusion
+❌ High-accuracy predictions
+❌ Deploying mobile apps
+❌ Complex authentication
+❌ GPU-powered cloud scaling
+❌ Custom-trained large models
+
+6. Tech Stack (Finalized)
+Frontend
+
+React + Vite
+
+Tailwind CSS
+
+Leaflet.js (open-source)
+
+Backend
+
+Node/Express (simple) OR FastAPI (better for ML)
+
+Python inference engine
+
+MongoDB (optional)
+
+ML/AI
+
+PyTorch
+
+U-Net backbone
+
+Earth Engine/Sentinel-2 dataset exports
+
+Deployment
+
+Frontend → Vercel/Netlify
+
+Backend → Render.com / Railway.app
+
+Model → In same backend (CPU inference)
+
+7. System Architecture (High Level)
+
+React Frontend → calls
+Express/FastAPI Backend → loads
+PyTorch Model → returns
+Mask prediction → Frontend overlays as heatmap
+
+Flow:
+User selects area → Backend fetches image → Python model predicts → Backend returns → UI overlays.
+
+8. Detailed Timeline (1 Month Plan)
+📌 Week 1 — Foundations
+
+Set up GitHub repo + project structure
+
+Build basic React frontend with map (Leaflet)
+
+Implement search + region selection
+
+Learn Earth Engine and export sample tiles
+
+Prepare dataset for model training
+
+Deliverable: Map UI + sample images ready.
+
+📌 Week 2 — AI Model
+
+Implement U-Net/U-Net-small in PyTorch
+
+Train model on sample wildfire/burn datasets
+
+Create inference script: predict(image.png) → mask.png
+
+Export trained model checkpoint
+
+Deliverable: Working inference script producing heatmaps.
+
+📌 Week 3 — Backend Integration
+
+Build FastAPI backend
+
+Create /predict endpoint
+
+Integrate Python inference
+
+Handle uploads / region-based retrieval
+
+Test end-to-end on local machine
+
+Deliverable: Frontend button triggers real model prediction.
+
+📌 Week 4 — Final App + Deployment
+
+Add mask overlay + opacity slider
+
+Add loading states + error handling
+
+Deploy frontend + backend
+
+Clean up UI
+
+Test on multiple sample regions
+
+Write README + presentation slides
+
+Deliverable: Fully deployed MVP.
+
+9. Success Metrics (for MVP)
+
+End-to-end prediction works in < 6–10 seconds
+
+Mask overlay loads properly 90% of the time
+
+Model provides visually meaningful hotspot detection
+
+App works on desktop browsers reliably
+
+Deployment links ready for portfolio/demo
+
+10. Risks & Mitigation
+Risk	Mitigation
+Model accuracy is low	Use simple U-Net + more data augmentation
+Satellite tiles hard to fetch	Pre-export fixed dataset from GEE
+Backend slow on CPU	Downscale images to 256×256
+Deployment errors	Deploy frontend + backend separately
+Time overruns	Stick to MVP scope strictly
+11. Future Expansion (Post-MVP)
+
+IoT sensor integration
+
+Fire spread prediction (time-series models)
+
+Better data pipelines (live satellite feed)
+
+Larger models (UNet++, ResNet-UNet, Segformer)
+
+User accounts + saved regions
+
+Mobile app
+
+Admin panel for risk reports

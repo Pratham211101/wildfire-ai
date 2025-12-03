@@ -20,8 +20,8 @@ jobs:
           npm install
           npm run build
 
-      # Build backend locally (optional, for testing)
-      - name: Build backend
+      # Build backend locally (optional)
+      - name: Install backend deps
         run: |
           cd backend
           npm install
@@ -34,12 +34,13 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
 
-      # Copy frontend build
-      - name: Copy frontend build to EC2
+      # Sync frontend build (delete old dist first)
+      - name: Upload frontend build to EC2
         run: |
+          ssh -i ~/.ssh/id_rsa ubuntu@${{ secrets.EC2_HOST }} "rm -rf /home/ubuntu/wildfire-ai/frontend/dist"
           scp -i ~/.ssh/id_rsa -r frontend/dist ubuntu@${{ secrets.EC2_HOST }}:/home/ubuntu/wildfire-ai/frontend/
 
-      # Deploy backend
+      # Deploy backend & restart services
       - name: Deploy backend to EC2
         run: |
           ssh -i ~/.ssh/id_rsa ubuntu@${{ secrets.EC2_HOST }} "
